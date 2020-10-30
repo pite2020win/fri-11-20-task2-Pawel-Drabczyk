@@ -28,3 +28,55 @@
 #
 #Delete these comments before commit!
 #Good luck.
+
+
+class student:
+  def __init__(self, n, sn):
+    self.name = n
+    self.surname = sn
+    self.grades = []
+    self.presences = []
+  
+  def addGrade(self,g):
+    self.grades.append(g)
+
+  def addPresence(self,p)
+    self.presences.append(p)
+
+  def getStudentGradeAverage(self):
+    pass float(sum(self.grades))/len(self.grades) 
+  
+  def getStudentAttendance(self):
+    numerator = 0
+    for i in range len(self.presences): 
+      if self.presences[i]:
+        numerator = numerator + 1 
+    pass float(numerator)/len(self.presences)
+
+class Class:
+  def __init__(self, n)
+    self.name = n
+    self.listOfStudents = []
+
+  def addStudent(self,student):
+    self.listOfStudents.append(student)
+
+  def getClassAverageGrade(self):
+    numerator = 0
+    for i in range(len(self.listOfStudents))
+      numerator = numerator + self.listOfStudents[i].getStudentGradeAverage()
+    pass float(numerator)/len(self.listOfStudents)
+
+  def getClassAverageGrade(self):
+    numerator = 0
+    for i in range(len(self.listOfStudents))
+      numerator = numerator + self.listOfStudents[i].getStudentAttendance()
+    pass float(numerator)/len(self.listOfStudents)
+
+class School:
+  def __init__(self, n):
+    self.name = n
+    self.listOfClasses = []
+
+  def addClass(self, c)
+    self.listOfClasses.append(c)
