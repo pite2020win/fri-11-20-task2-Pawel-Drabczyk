@@ -90,28 +90,27 @@ import statistics as stat
 def calculateAverage(dict):
   averages = []
   if "schoolsList" in dict:
-    averagesList = calculateAverage(dict["schoolsList"])
-    for i in averagesList:
-      averages.append(i)
+    for school in dict["schoolList"]:
+      averages.append( calculateAverage(school) )
   elif "clasList" in dict:
-    averagesList = calculateAverage(dict["clasList"])
-    for i in averagesList:
-      averages.append(i)
+    for clas in dict["clasList"]:
+      averages.append( calculateAverage(clas) )
   elif "studentList" in dict:
-    averagesList = calculateAverage(dict["studentList"])
-    for i in averagesList:
-      averages.append(i)
+    for student in dict["studentList"]:
+      averages.append( calculateAverage(student) )
   elif "grades" in dict:
     averages = dict["grades"]
   else:
     logging.warning(f'Watch out! Wrong type of dictonary! ')
-    return [-1]
+    return -1
   return stat.mean(averages)
 
 if __name__ == '__main__':
   logger = logging.getLogger()
   logger.setLevel(logging.DEBUG)
   nStudents = 15
+
+################## creating dictionaries ##########################
 
   randomNames = ["Florentyna", "Agnieszka", "Ewelina", "Edyta", "Klaudia", "Aniela", "Paula", "Angelika", "Julianna", "Adrianna", "Gabriela", "Matylda", "Jolanta", "Beata","Weronika"]
   randomSurnames = ["Makowska", "Lewandowska", "Jakubowska", "Walczak", "Gajewska", "Zawadzaka", "Baran", "Przybylska", "Wojciechowska", "Chmielewska", "Pawlak", "Kolodziej", "Jaworska", "Zakrzewska", "Sobczak" ]
@@ -153,6 +152,8 @@ if __name__ == '__main__':
     "schoolList" : [school1, school2]
   }
 
+################ showcases ###########################
+
   if logger.level == logging.DEBUG:
     gradesTemp = studentListTemp[1]["grades"]
     presencesTemp = studentListTemp[1]["presences"]
@@ -164,15 +165,27 @@ if __name__ == '__main__':
   testAveragesClas = []
   for stud in schools["schoolList"][0]["clasList"][0]["studentList"]:
     testAveragesClas.append( calculateAverage(stud) )
-  #testAverageClas = calculateAverage(schools["schoolList"][0]["clasList"][0])
-  testAverageClas = calculateAverage(clas1)
+  testAverageClas = calculateAverage(schools["schoolList"][0]["clasList"][0])
+  logging.info(f'Testing calculateAverage function for clas1 from school1. Averages of individual students: {testAveragesClas}, average of the clas {schools["schoolList"][0]["clasList"][0]["name"]}: {testAverageClas:.2f}')
 
-  logging.info(f'Testing calculateAverage function for clas1 from school1. Averages of individual students: {testAveragesClas}, average of the clas {schools["schoolList"][0]["clasList"][0]["name"]}: {testAverageClas}')
+  testAveragesSchool = []
+  for clas in schools["schoolList"][0]["clasList"]:
+    testAveragesSchool.append( calculateAverage(clas) )
+  testAverageSchool = calculateAverage(schools["schoolList"][0])
+  logging.info(f'Testing calculateAverage function for school1. Averages of individual clases: {testAveragesSchool}, average of the school  {schools["schoolList"][0]["name"]} : {testAverageSchool:.2f}')
 
+################### writing to a file ###############################
 
   with open('schools.txt', 'w') as outFile:
     json.dump(schools, outFile)
 
   with open('schools.txt') as inputFile:
-    data = json.load(inputFile)
+    schoolsFromJson = json.load(inputFile)
 
+################## more showcases ###################################
+
+  testAveragesSchool = []
+  for clas in schoolsFromJson["schoolList"][0]["clasList"]:
+    testAveragesSchool.append( calculateAverage(clas) )
+  testAverageSchool = calculateAverage(schoolsFromJson["schoolList"][0])
+  logging.info(f'Testing writing to and reading from json file. Once again testing calculateAverage function for school1 (after rereading from json file). \n Averages of individual clases: {testAveragesSchool}, average of the school  {schoolsFromJson["schoolList"][0]["name"]} : {testAverageSchool:.2f}')
