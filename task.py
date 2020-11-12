@@ -1,87 +1,3 @@
-# Class diary
-#
-# Create program for handling lesson scores.
-# Use python to handle student (highscool) class scores, and attendance.
-# Make it possible to:
-# - Get students total average score (average across classes)
-# - get students average score in class
-# - hold students name and surname
-# - Count total attendance of student
-#
-# Please, use your imagination and create more functionalities.
-# Your project should be able to handle entire school(s?).
-# If you have enough courage and time, try storing (reading/writing)
-# data in text files (YAML, JSON).
-# If you have even more courage, try implementing user interface (might be text-like).
-#
-#Try to expand your implementation as best as you can. 
-#Think of as many features as you can, and try implementing them.
-#Make intelligent use of pythons syntactic sugar (overloading, iterators, generators, etc)
-#Most of all: CREATE GOOD, RELIABLE, READABLE CODE.
-#The goal of this task is for you to SHOW YOUR BEST python programming skills.
-#Impress everyone with your skills, show off with your code.
-#
-#Your program must be runnable with command "python task.py".
-#Show some usecases of your library in the code (print some things)
-#
-#When you are done upload this code to your github repository. 
-#
-#Delete these comments before commit!
-#Good luck.
-
-'''
-class student:
-  def __init__(self, n, sn):
-    self.name = n
-    self.surname = sn
-    self.grades = []
-    self.presences = []
-  
-  def addGrade(self,g):
-    self.grades.append(g)
-
-  def addPresence(self,p):
-    self.presences.append(p)
-
-  def getStudentGradeAverage(self):
-    return float(sum(self.grades))/len(self.grades)
-  
-  def getStudentAttendance(self):
-    numerator = 0
-    for i in range len(self.presences): 
-      if self.presences[i]:
-        numerator = numerator + 1 
-    return float(numerator)/len(self.presences)
-
-class Class:
-  def __init__(self, n)
-    self.name = n
-    self.listOfStudents = []
-
-  def addStudent(self,student):
-    self.listOfStudents.append(student)
-
-  def getClassAverageGrade(self):
-    numerator = 0
-    for i in range(len(self.listOfStudents))
-      numerator = numerator + self.listOfStudents[i].getStudentGradeAverage()
-    return float(numerator)/len(self.listOfStudents)
-
-  def getClassAverageGrade(self):
-    numerator = 0
-    for i in range(len(self.listOfStudents))
-      numerator = numerator + self.listOfStudents[i].getStudentAttendance()
-    return float(numerator)/len(self.listOfStudents)
-
-class School:
-  def __init__(self, n):
-    self.name = n
-    self.listOfClasses = []
-
-  def addClass(self, c)
-    self.listOfClasses.append(c)
-'''
-
 import random
 import logging
 import json
@@ -110,7 +26,7 @@ if __name__ == '__main__':
   logger.setLevel(logging.DEBUG)
   nStudents = 15
 
-################## creating dictionaries ##########################
+  ################## creating dictionaries ##########################
 
   randomNames = ["Florentyna", "Agnieszka", "Ewelina", "Edyta", "Klaudia", "Aniela", "Paula", "Angelika", "Julianna", "Adrianna", "Gabriela", "Matylda", "Jolanta", "Beata","Weronika"]
   randomSurnames = ["Makowska", "Lewandowska", "Jakubowska", "Walczak", "Gajewska", "Zawadzaka", "Baran", "Przybylska", "Wojciechowska", "Chmielewska", "Pawlak", "Kolodziej", "Jaworska", "Zakrzewska", "Sobczak" ]
@@ -120,8 +36,7 @@ if __name__ == '__main__':
     student = {
       "name" : randomNames[i],
       "surname" : randomSurnames[i],
-      "grades" : random.choices([1,2,3,4,5],k=5),
-      "presences" : random.choices([True,False], k=5)
+      "grades" : random.choices([1,2,3,4,5],k=5)
     }
     studentListTemp.append(student)
 
@@ -152,12 +67,40 @@ if __name__ == '__main__':
     "schoolList" : [school1, school2]
   }
 
-################ showcases ###########################
+  ################ showcases ###########################
 
-  if logger.level == logging.DEBUG:
-    gradesTemp = studentListTemp[1]["grades"]
-    presencesTemp = studentListTemp[1]["presences"]
-    logging.debug(f"studentList[1].grades = {gradesTemp} studentListTemp[1].presences = {presencesTemp}")
+  studName = 'Agnieszka'
+  studSurname = 'Lewandowska'
+  clasName =  '1a'
+  schoolName = 'Liceum numer 1'
+  schoolsName = 'Zespol szkol licealnych w krakowie'
+  if schoolsName == schools["name"]:
+    for s in schools['schoolList']:
+      if s["name"] == schoolName:
+        clases = s['clasList']
+        for c in clases:
+          if c['name'] == clasName:
+            for stud in c['studentList']:
+              if stud['name'] == studName and stud['surname'] == studSurname:
+                searchedStudent = stud
+
+  searchedStudentGrades = searchedStudent['grades']
+  searchedStudentAverage = calculateAverage(searchedStudent)
+  logging.info(f'Searching for the grades of the student with\nname: {studName}\nsurname: {studSurname}\nclasName: {clasName}\nschoolName: {schoolName}\nschoolsName: {schoolsName}\nResults:\ngrades: {searchedStudentGrades}\naverage: {searchedStudentAverage}')
+
+  if schoolsName == schools["name"]:
+    for s in schools['schoolList']:
+      if s["name"] == schoolName:
+        clases = s['clasList']
+        for c in clases:
+          if c['name'] == clasName:
+            searchedClas = c
+
+  searchedClasAverages = []
+  for stud in searchedClas['studentList']:
+    searchedClasAverages.append( calculateAverage(stud) )
+  searchedClasAverage = calculateAverage(searchedClas)
+  logging.info(f'Searching for the avera of the clas with\nclasName: {clasName}\nschoolName: {schoolName}\nschoolsName: {schoolsName}\nResults:\naverages of the students: {searchedClasAverages}\naverage of the clas: {searchedClasAverage}')
 
   testAverageStudent = calculateAverage( schools["schoolList"][0]["clasList"][0]["studentList"][0] )
   logging.info(f'Testing calculateAverage function for student1  from clas1 from school1. Grades: {schools["schoolList"][0]["clasList"][0]["studentList"][0]["grades"]}, average: {testAverageStudent}')
@@ -174,7 +117,7 @@ if __name__ == '__main__':
   testAverageSchool = calculateAverage(schools["schoolList"][0])
   logging.info(f'Testing calculateAverage function for school1. Averages of individual clases: {testAveragesSchool}, average of the school  {schools["schoolList"][0]["name"]} : {testAverageSchool:.2f}')
 
-################### writing to a file ###############################
+  ################### writing to a file ###############################
 
   with open('schools.txt', 'w') as outFile:
     json.dump(schools, outFile)
@@ -182,7 +125,7 @@ if __name__ == '__main__':
   with open('schools.txt') as inputFile:
     schoolsFromJson = json.load(inputFile)
 
-################## more showcases ###################################
+  ################## more showcases ###################################
 
   testAveragesSchool = []
   for clas in schoolsFromJson["schoolList"][0]["clasList"]:
